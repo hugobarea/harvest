@@ -1,0 +1,12 @@
+certifi==2024.8.30
+charset-normalizer==3.4.0
+idna==3.10
+ping3==4.0.8
+pyfiglet==1.0.2
+python-dateutil==2.9.0.post0
+python-nmap==0.7.1
+python-whois==0.9.4
+requests==2.32.3
+six==1.16.0
+urllib3==2.2.3
+whois==1.20240129.2
