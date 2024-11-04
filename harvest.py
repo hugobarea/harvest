@@ -29,14 +29,16 @@ def scan_whois(target):
 	print("\n-> Scanning WHOIS for target:", target)
 	print("-------------------------------------------")
 	print(r_whois)
-
-	emails = r_whois.emails
 	
 	print("\n-> Checking e-mails found for breaches:")
 	print("----------------------------------------------")
 		
-	for email in emails:
-		check_leaks(email)
+
+	if type(r_whois.emails) is list:
+		for email in emails:
+			check_leaks(email)
+	else:
+		check_leaks(r_whois.emails)
 
 
 def check_leaks(email):
@@ -51,8 +53,10 @@ def check_leaks(email):
 			print(f"- {breach["Name"]}, {breach["BreachDate"]}")
 	elif response.status_code == 404:
 		print(f"{email} has apparently not been leaked")
+	elif response.status_code == 401:
+		print(f"{email} could not be checked for leaks. API key is invalid")
 	else:
-		print("ERROR checking HaveIBeenPwned API:", response.status_code)
+		print(f"ERROR checking HaveIBeenPwned API for {email}:", response.status_code)
 
 def is_live(target):
 	try:
@@ -61,8 +65,8 @@ def is_live(target):
 			return True
 		else:
 			return False
-	except Exception:
-		print("Error pinging", target)
+	except PermissionError:
+		print(f"\nCould not ping {target}. Root privileges are needed. Proceeding anyways...")
 		return False
 
 def nmap_scan(target):
